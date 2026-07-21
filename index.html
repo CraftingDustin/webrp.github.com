@@ -127,7 +127,7 @@
         <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
         <div style="display:flex; flex:1; justify-content:flex-end;">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Suchen..." onkeypress="checkEnter(event)">
+                <input type="text" id="searchInput" placeholder="Video-Name oder Link..." onkeypress="checkEnter(event)">
             </div>
             <button class="search-btn" onclick="searchVideo()">🔍</button>
         </div>
@@ -160,20 +160,22 @@
             let videoId = extractVideoId(query);
 
             if (videoId) {
+                // Direkte Video-ID oder Link
                 contentArea.innerHTML = `
-                    <div class="search-info">Ergebnis für: "${query}"</div>
+                    <div class="search-info">Videowiedergabe</div>
                     <div class="video-card">
                         <div class="video-thumbnail">
                             <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
                         </div>
                         <div class="video-info">
-                            <div class="video-title">Suchergebnis / Video</div>
+                            <div class="video-title">Direktes Video</div>
                             <div>Gespielt über YouTube RP</div>
                         </div>
                     </div>
                 `;
             } else {
-                let encodedQuery = encodeURIComponent(query);
+                // Suchbegriff als Video-Playlist übergeben, um den "Video nicht gefunden"-Fehler zu verhindern
+                let encodedQuery = encodeURIComponent(query + " official music video trailer");
                 contentArea.innerHTML = `
                     <div class="search-info">Suche: "${query}"</div>
                     <div class="video-card">
