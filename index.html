@@ -120,6 +120,24 @@
             border: 1px solid #282828;
             border-radius: 12px;
         }
+        .external-search-box {
+            background: #1f1f1f;
+            border: 1px solid #303030;
+            border-radius: 12px;
+            padding: 30px;
+            text-align: center;
+        }
+        .yt-link-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 15px;
+            font-size: 14px;
+        }
     </style>
 </head>
 <body>
@@ -128,7 +146,7 @@
         <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
         <div style="display:flex; flex:1; justify-content:center;">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Video, Playlist oder ID..." onkeypress="checkEnter(event)">
+                <input type="text" id="searchInput" placeholder="Video-ID, Link oder Suchbegriff..." onkeypress="checkEnter(event)">
             </div>
             <button class="search-btn" onclick="searchVideo()">🔍</button>
         </div>
@@ -191,15 +209,11 @@
             } else {
                 let encodedQuery = encodeURIComponent(query);
                 contentArea.innerHTML = `
-                    <div class="search-info">Suchergebnisse für: "${query}"</div>
-                    <div class="video-card">
-                        <div class="video-thumbnail" style="height: 480px;">
-                            <iframe src="https://www.youtube-nocookie.com/embed?listType=search&list=${encodedQuery}&autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>
-                        </div>
-                        <div class="video-info">
-                            <div class="video-title">Automatische Videoliste</div>
-                            <div>Durchklickbar über den Player</div>
-                        </div>
+                    <div class="search-info">Suchergebnisse</div>
+                    <div class="external-search-box">
+                        <p style="margin: 0 0 10px 0; font-size: 16px; color: #fff;">Suche nach: <strong>"${query}"</strong></p>
+                        <p style="margin: 0 0 20px 0; font-size: 13px; color: #aaa;">YouTube lässt direkte Suchlisten im Browser nicht mehr per iFrame zu. Klicke hier, um die Ergebnisse direkt zu öffnen und Videos zu finden:</p>
+                        <a href="https://www.youtube.com/results?search_query=${encodedQuery}" target="_blank" class="yt-link-btn">Auf YouTube suchen & abspielen</a>
                     </div>
                 `;
             }
