@@ -127,6 +127,13 @@
             display: flex;
             flex-direction: column;
         }
+        @media (min-width: 901px) {
+            .sidebar-section {
+                height: calc(100vh - 145px);
+                max-height: 850px;
+                min-height: 600px;
+            }
+        }
         .sidebar-title {
             font-size: 16px;
             font-weight: bold;
@@ -140,6 +147,7 @@
             gap: 12px;
             overflow-y: auto;
             padding-right: 4px;
+            flex-grow: 1;
         }
         .video-list::-webkit-scrollbar {
             width: 8px;
@@ -238,7 +246,6 @@
     </div>
 
     <script>
-        // Bereinigte, 100% funktionierende Liste mit echten Video-IDs
         const channelVideos = [
             { id: "iyuXet_HH7Y", title: "DER CRINGESTE FANBOY IN GTA RP", meta: "Gleggmire • Trolling" },
             { id: "_JrBlwO0TBs", title: "I'M A PANTS IN GTA-RP?!?", meta: "Gleggmire • Trolling" },
@@ -268,7 +275,6 @@
 
             channelVideos.forEach(video => {
                 const isActive = video.id === activeId;
-                // Nutzt HQ-Thumbnails mit automatischem Fallback auf Standardqualität falls hqdefault nicht geladen werden kann
                 const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
                 
                 const item = document.createElement('div');
