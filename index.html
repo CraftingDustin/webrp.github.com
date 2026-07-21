@@ -2,56 +2,42 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>YouTube</title>
     <style>
         * {
             box-sizing: border-box;
         }
         body {
-            background-color: #121212;
+            background-color: #0f0f0f;
             color: #ffffff;
             font-family: Roboto, Arial, sans-serif;
             margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            overflow: hidden;
-        }
-        .phone-frame {
-            width: 100%;
-            max-width: 410px;
-            height: 100%;
-            max-height: 840px;
-            background-color: #0f0f0f;
-            border-radius: 40px;
-            border: 8px solid #333;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            overflow: hidden;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            padding: 16px;
+            min-height: 100vh;
+            overflow-y: auto;
         }
         header {
+            margin-top: 15px;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #212121;
-            padding: 8px 12px;
-            height: 52px;
-            border-bottom: 1px solid #303030;
-            flex-shrink: 0;
+            padding: 10px 20px;
+            height: 56px;
+            border: 1px solid #303030;
+            border-radius: 12px;
+            margin-bottom: 20px;
         }
         .logo {
             color: #ff0000;
             font-weight: bold;
-            font-size: 15px;
+            font-size: 18px;
             letter-spacing: -1px;
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
             cursor: pointer;
             white-space: nowrap;
         }
@@ -61,12 +47,12 @@
         .search-container {
             display: flex;
             flex: 1;
-            max-width: 180px;
-            margin: 0 8px;
+            max-width: 400px;
+            margin: 0 20px;
             background: #121212;
             border: 1px solid #303030;
-            border-radius: 16px 0 0 16px;
-            padding: 2px 10px;
+            border-radius: 20px 0 0 20px;
+            padding: 4px 16px;
         }
         input {
             width: 100%;
@@ -74,25 +60,24 @@
             border: none;
             color: white;
             outline: none;
-            font-size: 12px;
+            font-size: 14px;
         }
         .search-btn {
             background: #222;
             border: 1px solid #303030;
             border-left: none;
-            border-radius: 0 16px 16px 0;
+            border-radius: 0 20px 20px 0;
             color: #aaa;
-            padding: 0 8px;
+            padding: 0 16px;
             cursor: pointer;
-            font-size: 12px;
+            font-size: 14px;
         }
-        .content-scroll {
-            flex: 1;
-            overflow-y: auto;
-            padding: 12px;
+        .content-area {
+            max-width: 900px;
+            margin: 0 auto;
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 20px;
         }
         .video-card {
             background: #1f1f1f;
@@ -116,67 +101,48 @@
             left: 0;
         }
         .video-info {
-            padding: 10px 12px;
-            font-size: 12px;
+            padding: 14px 16px;
+            font-size: 13px;
             color: #aaa;
         }
         .video-title {
             color: #fff;
             font-weight: bold;
-            margin-bottom: 4px;
-            font-size: 13px;
-            line-height: 1.3;
+            margin-bottom: 6px;
+            font-size: 15px;
+            line-height: 1.4;
         }
         .search-info {
-            padding: 10px 12px;
-            font-size: 13px;
+            padding: 12px 16px;
+            font-size: 14px;
             color: #aaa;
             background: #181818;
             border: 1px solid #282828;
             border-radius: 12px;
         }
-        .external-search-box {
-            background: #1f1f1f;
-            border: 1px solid #303030;
-            border-radius: 12px;
-            padding: 20px;
-            text-align: center;
-        }
-        .yt-link-btn {
-            display: inline-block;
-            background-color: #ff0000;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 20px;
-            text-decoration: none;
-            font-weight: bold;
-            margin-top: 10px;
-            font-size: 13px;
-        }
     </style>
 </head>
 <body>
 
-    <div class="phone-frame">
-        <header>
-            <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
-            <div style="display:flex; flex:1; justify-content:flex-end;">
-                <div class="search-container">
-                    <input type="text" id="searchInput" placeholder="Video, Playlist oder ID..." onkeypress="checkEnter(event)">
-                </div>
-                <button class="search-btn" onclick="searchVideo()">🔍</button>
+    <header>
+        <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
+        <div style="display:flex; flex:1; justify-content:center;">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Video, Playlist oder ID..." onkeypress="checkEnter(event)">
             </div>
-        </header>
+            <button class="search-btn" onclick="searchVideo()">🔍</button>
+        </div>
+        <div style="width: 70px;"></div>
+    </header>
 
-        <div id="contentArea" class="content-scroll">
-            <div class="video-card">
-                <div class="video-thumbnail">
-                    <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                </div>
-                <div class="video-info">
-                    <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
-                    <div>Vor 2 Stunden • 12.4K Aufrufe</div>
-                </div>
+    <div id="contentArea" class="content-area">
+        <div class="video-card">
+            <div class="video-thumbnail">
+                <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
+                <div>Vor 2 Stunden • 12.4K Aufrufe</div>
             </div>
         </div>
     </div>
@@ -210,27 +176,30 @@
                     </div>
                 `;
             } else if (playlistId) {
-                // Zeigt die Playlist sauber als abspielbare Liste untereinander an, ohne dass das Layout bricht
                 contentArea.innerHTML = `
-                    <div class="search-info">Playlist / Kanal-Videos nacheinander</div>
+                    <div class="search-info">Playlist-Wiedergabe</div>
                     <div class="video-card">
-                        <div class="video-thumbnail" style="height: 320px;">
+                        <div class="video-thumbnail" style="height: 480px;">
                             <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>
                         </div>
                         <div class="video-info">
-                            <div class="video-title">Playlist-Wiedergabe</div>
-                            <div>Videos laufen automatisch nacheinander</div>
+                            <div class="video-title">Playlist / Kanal-Videos</div>
+                            <div>Videos laufen nacheinander</div>
                         </div>
                     </div>
                 `;
             } else {
                 let encodedQuery = encodeURIComponent(query);
                 contentArea.innerHTML = `
-                    <div class="search-info">Suche</div>
-                    <div class="external-search-box">
-                        <p style="margin: 0 0 10px 0; font-size: 14px; color: #fff;">Suchbegriff: <strong>"${query}"</strong></p>
-                        <p style="margin: 0 0 15px 0; font-size: 12px; color: #aaa;">Füge einen direkten Videolink, eine Video-ID oder eine Playlist-ID ein.</p>
-                        <a href="https://www.youtube.com/results?search_query=${encodedQuery}" target="_blank" class="yt-link-btn">Auf YouTube suchen</a>
+                    <div class="search-info">Suchergebnisse für: "${query}"</div>
+                    <div class="video-card">
+                        <div class="video-thumbnail" style="height: 480px;">
+                            <iframe src="https://www.youtube-nocookie.com/embed?listType=search&list=${encodedQuery}&autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">Automatische Videoliste</div>
+                            <div>Durchklickbar über den Player</div>
+                        </div>
                     </div>
                 `;
             }
