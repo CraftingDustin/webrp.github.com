@@ -3,72 +3,133 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Google</title>
+    <title>YouTube</title>
     <style>
         body {
-            background-color: #202124;
-            color: #e8eaed;
-            font-family: Arial, sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
+            background-color: #0f0f0f;
+            color: #ffffff;
+            font-family: Roboto, Arial, sans-serif;
             margin: 0;
+            padding: 0;
+        }
+        header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #212121;
+            padding: 10px 15px;
+            height: 40px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
         }
         .logo {
-            font-size: 52px;
+            color: #ff0000;
             font-weight: bold;
-            margin-bottom: 30px;
-            letter-spacing: -2px;
-            user-select: none;
-        }
-        .logo span:nth-child(1) { color: #4285F4; }
-        .logo span:nth-child(2) { color: #EA4335; }
-        .logo span:nth-child(3) { color: #FBBC05; }
-        .logo span:nth-child(4) { color: #4285F4; }
-        .logo span:nth-child(5) { color: #34A853; }
-        .logo span:nth-child(6) { color: #EA4335; }
-        
-        .search-box {
+            font-size: 18px;
+            letter-spacing: -1px;
             display: flex;
             align-items: center;
-            background: #303134;
-            border: 1px solid #5f6368;
-            border-radius: 28px;
-            width: 90%;
-            max-width: 450px;
-            height: 48px;
-            padding: 0 16px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+            gap: 5px;
+        }
+        .logo span {
+            color: #ffffff;
+        }
+        .search-container {
+            display: flex;
+            width: 60%;
+            background: #121212;
+            border: 1px solid #303030;
+            border-radius: 20px 0 0 20px;
+            padding: 4px 10px;
         }
         input {
-            flex: 1;
+            width: 100%;
             background: transparent;
             border: none;
-            color: #e8eaed;
-            font-size: 16px;
+            color: white;
             outline: none;
+            font-size: 13px;
         }
-        button {
-            background: transparent;
-            border: none;
-            color: #8ab4f8;
-            font-weight: bold;
+        .search-btn {
+            background: #222;
+            border: 1px solid #303030;
+            border-left: none;
+            border-radius: 0 20px 20px 0;
+            color: #aaa;
+            padding: 0 12px;
             cursor: pointer;
-            font-size: 15px;
+        }
+        .video-grid {
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .video-card {
+            background: #1f1f1f;
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid #282828;
+        }
+        .video-thumbnail {
+            width: 100%;
+            aspect-ratio: 16/9;
+            background: #000;
+            position: relative;
+        }
+        .video-thumbnail iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+        .video-info {
+            padding: 10px;
+            font-size: 13px;
+            color: #aaa;
+        }
+        .video-title {
+            color: #fff;
+            font-weight: bold;
+            margin-bottom: 4px;
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
-    <div class="logo">
-        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+
+    <header>
+        <div class="logo">▶ YouTube <span>RP</span></div>
+        <div style="display:flex; width: 70%;">
+            <div class="search-container">
+                <input type="text" id="searchInput" placeholder="Suchen...">
+            </div>
+            <button class="search-btn" onclick="searchVideo()">🔍</button>
+        </div>
+    </header>
+
+    <div class="video-grid" id="videoFeed">
+        <div class="video-card">
+            <div class="video-thumbnail">
+                <!-- Korrigierter Embed-Parameter (playsinline=1 und origin), damit CEF den Player nicht blockiert -->
+                <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <div class="video-info">
+                <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
+                <div>Vor 2 Stunden • 12.4K Aufrufe</div>
+            </div>
+        </div>
     </div>
-    
-    <!-- Wir nutzen einen stabilen Such-Endpoint, der im Handy-Frame nicht abstürzt -->
-    <form action="https://lite.duckduckgo.com/lite/" method="GET" class="search-box">
-        <input type="text" name="q" placeholder="Google Suche..." autocomplete="off" required>
-        <button type="submit">Suchen</button>
-    </form>
+
+    <script>
+        function searchVideo() {
+            let query = document.getElementById('searchInput').value;
+            if(!query) return;
+            alert("Suche nach: " + query);
+        }
+    </script>
 </body>
 </html>
