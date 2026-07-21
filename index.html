@@ -11,33 +11,39 @@
             font-family: Roboto, Arial, sans-serif;
             margin: 0;
             padding: 0;
+            padding-top: 55px;
         }
         header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #212121;
             padding: 10px 15px;
-            height: 40px;
-            position: sticky;
-            top: 0;
-            z-index: 10;
+            box-sizing: border-box;
+            height: 50px;
+            z-index: 100;
+            border-bottom: 1px solid #303030;
         }
         .logo {
             color: #ff0000;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 16px;
             letter-spacing: -1px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
+            cursor: pointer;
         }
         .logo span {
             color: #ffffff;
         }
         .search-container {
             display: flex;
-            width: 60%;
+            width: 65%;
             background: #121212;
             border: 1px solid #303030;
             border-radius: 20px 0 0 20px;
@@ -57,11 +63,11 @@
             border-left: none;
             border-radius: 0 20px 20px 0;
             color: #aaa;
-            padding: 0 12px;
+            padding: 0 10px;
             cursor: pointer;
         }
         .video-grid {
-            padding: 15px;
+            padding: 10px;
             display: flex;
             flex-direction: column;
             gap: 15px;
@@ -97,24 +103,31 @@
             margin-bottom: 4px;
             font-size: 14px;
         }
+        .search-info {
+            padding: 10px 15px;
+            font-size: 14px;
+            color: #aaa;
+            background: #181818;
+            border-bottom: 1px solid #282828;
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo">▶ YouTube <span>RP</span></div>
-        <div style="display:flex; width: 70%;">
+        <div class="logo" onclick="resetHome()">▶ YouTube <span>RP</span></div>
+        <div style="display:flex; width: 65%;">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Suchen...">
+                <input type="text" id="searchInput" placeholder="Suche (Video oder ID)..." onkeypress="checkEnter(event)">
             </div>
             <button class="search-btn" onclick="searchVideo()">🔍</button>
         </div>
     </header>
 
-    <div class="video-grid" id="videoFeed">
+    <div id="contentArea" class="video-grid">
+        <!-- Start-Feed -->
         <div class="video-card">
             <div class="video-thumbnail">
-                <!-- Korrigierter Embed-Parameter (playsinline=1 und origin), damit CEF den Player nicht blockiert -->
                 <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
             <div class="video-info">
@@ -125,10 +138,77 @@
     </div>
 
     <script>
+        function checkEnter(e) {
+            if (e.key === 'Enter') {
+                searchVideo();
+            }
+        }
+
         function searchVideo() {
-            let query = document.getElementById('searchInput').value;
+            let query = document.getElementById('searchInput').value.trim();
             if(!query) return;
-            alert("Suche nach: " + query);
+
+            let contentArea = document.getElementById('contentArea');
+
+            // Prüfen, ob der Nutzer eine YouTube-Video-ID (oder URL mit ID) eingegeben hat
+            let videoId = extractVideoId(query);
+
+            if (videoId) {
+                // Wenn es eine gültige ID ist, direkt als Player anzeigen
+                contentArea.innerHTML = `
+                    <div class="search-info">Ergebnis für: "${query}"</div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">Suchergebnis / Video</div>
+                            <div>Gespielt über YouTube RP</div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Wenn es ein Suchbegriff ist, betten wir eine sichere YouTube-Such-Embed-Ansicht oder einen Direkt-Player mit Suchbegriff ein
+                let encodedQuery = encodeURIComponent(query);
+                contentArea.innerHTML = `
+                    <div class="search-info">Suchergebnisse für: "${query}"</div>
+                    <div class="video-card">
+                        <div class="video-thumbnail">
+                            <!-- Lädt eine direkte YouTube-Einbettung basierend auf dem Begriff -->
+                            <iframe src="https://www.youtube-nocookie.com/embed?listType=search&list=${encodedQuery}&autoplay=1&controls=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                        </div>
+                        <div class="video-info">
+                            <div class="video-title">Playlist / Suche: ${query}</div>
+                            <div>YouTube Wiedergabe</div>
+                        </div>
+                    </div>
+                `;
+            }
+        }
+
+        function extractVideoId(urlOrId) {
+            // Wenn es bereits eine reine ID ist (ca. 11 Zeichen)
+            if (/^[a-zA-Z0-9_-]{11}$/.test(urlOrId)) {
+                return urlOrId;
+            }
+            // Versuche Standard-YouTube-URLs zu parsen (watch?v=... oder youtu.be/...)
+            let match = urlOrId.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+            return match ? match[1] : null;
+        }
+
+        function resetHome() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('contentArea').innerHTML = `
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
+                        <div>Vor 2 Stunden • 12.4K Aufrufe</div>
+                    </div>
+                </div>
+            `;
         }
     </script>
 </body>
