@@ -14,6 +14,7 @@
             font-family: Roboto, Arial, sans-serif;
             margin: 0;
             padding: 24px;
+            padding-top: 84px; /* Hier um 60px nach unten verschoben */
             min-height: 100vh;
         }
         header {
@@ -315,7 +316,9 @@
             if (videoId) {
                 playVideo(videoId, "Benutzerdefiniertes Video", "Wiedergabe über ID/Link");
             } else {
-                alert("Bitte eine gültige YouTube Video-ID oder einen direkten Link eingeben!");
+                document.getElementById('mainPlayer').src = "";
+                document.getElementById('videoTitle').innerText = "❌ Ungültige Eingabe";
+                document.getElementById('videoMeta').innerText = "Bitte gib eine korrekte YouTube Video-ID (11 Zeichen) oder einen gültigen Link ein.";
             }
         }
 
