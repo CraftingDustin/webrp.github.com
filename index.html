@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YouTube</title>
+    <title>YouTube RP - Erweiterte Creator Hub (20+ Videos)</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,33 +13,30 @@
             color: #ffffff;
             font-family: Roboto, Arial, sans-serif;
             margin: 0;
-            padding: 16px;
+            padding: 24px;
             min-height: 100vh;
-            overflow-y: auto;
         }
         header {
-            margin-top: 15px;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: space-between;
             background-color: #212121;
-            padding: 10px 20px;
-            height: 56px;
+            padding: 10px 24px;
+            height: 60px;
             border: 1px solid #303030;
             border-radius: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 24px;
         }
         .logo {
             color: #ff0000;
             font-weight: bold;
-            font-size: 18px;
+            font-size: 20px;
             letter-spacing: -1px;
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             cursor: pointer;
-            white-space: nowrap;
         }
         .logo span {
             color: #ffffff;
@@ -47,7 +44,7 @@
         .search-container {
             display: flex;
             flex: 1;
-            max-width: 400px;
+            max-width: 450px;
             margin: 0 20px;
             background: #121212;
             border: 1px solid #303030;
@@ -72,27 +69,32 @@
             cursor: pointer;
             font-size: 14px;
         }
-        .content-area {
-            max-width: 900px;
+        .main-container {
+            max-width: 1200px;
             margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 380px;
+            gap: 24px;
+        }
+        @media (max-width: 900px) {
+            .main-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        .player-section {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 16px;
         }
-        .video-card {
-            background: #1f1f1f;
+        .video-player-box {
+            background: #000;
             border-radius: 12px;
             overflow: hidden;
-            border: 1px solid #282828;
-            width: 100%;
-        }
-        .video-thumbnail {
-            width: 100%;
             aspect-ratio: 16/9;
-            background: #000;
+            border: 1px solid #282828;
             position: relative;
         }
-        .video-thumbnail iframe {
+        .video-player-box iframe {
             width: 100%;
             height: 100%;
             border: none;
@@ -100,43 +102,113 @@
             top: 0;
             left: 0;
         }
-        .video-info {
-            padding: 14px 16px;
+        .current-video-info {
+            background: #1f1f1f;
+            padding: 16px;
+            border-radius: 12px;
+            border: 1px solid #282828;
+        }
+        .current-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 6px;
+            color: #fff;
+        }
+        .current-meta {
             font-size: 13px;
             color: #aaa;
         }
-        .video-title {
-            color: #fff;
-            font-weight: bold;
-            margin-bottom: 6px;
-            font-size: 15px;
-            line-height: 1.4;
-        }
-        .search-info {
-            padding: 12px 16px;
-            font-size: 14px;
-            color: #aaa;
-            background: #181818;
+        .sidebar-section {
+            background: #1a1a1a;
             border: 1px solid #282828;
             border-radius: 12px;
+            padding: 16px;
+            height: 650px;
+            display: flex;
+            flex-direction: column;
         }
-        .external-search-box {
-            background: #1f1f1f;
-            border: 1px solid #303030;
-            border-radius: 12px;
-            padding: 30px;
-            text-align: center;
-        }
-        .yt-link-btn {
-            display: inline-block;
-            background-color: #ff0000;
-            color: white;
-            padding: 12px 24px;
-            border-radius: 20px;
-            text-decoration: none;
+        .sidebar-title {
+            font-size: 16px;
             font-weight: bold;
-            margin-top: 15px;
-            font-size: 14px;
+            margin-bottom: 16px;
+            color: #fff;
+            flex-shrink: 0;
+        }
+        .video-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            overflow-y: auto;
+            padding-right: 4px;
+        }
+        /* Scrollbar Design für die Sidebar */
+        .video-list::-webkit-scrollbar {
+            width: 8px;
+        }
+        .video-list::-webkit-scrollbar-track {
+            background: #121212;
+            border-radius: 4px;
+        }
+        .video-list::-webkit-scrollbar-thumb {
+            background: #444;
+            border-radius: 4px;
+        }
+        .video-list::-webkit-scrollbar-thumb:hover {
+            background: #666;
+        }
+
+        .video-item {
+            display: flex;
+            gap: 12px;
+            background: #212121;
+            padding: 8px;
+            border-radius: 8px;
+            cursor: pointer;
+            border: 1px solid transparent;
+            transition: 0.2s;
+            flex-shrink: 0;
+        }
+        .video-item:hover {
+            border-color: #444;
+            background: #282828;
+        }
+        .video-item.active {
+            border-color: #ff0000;
+            background: #2a1f1f;
+        }
+        .item-thumb {
+            width: 120px;
+            aspect-ratio: 16/9;
+            background: #000;
+            border-radius: 4px;
+            overflow: hidden;
+            flex-shrink: 0;
+            position: relative;
+        }
+        .item-thumb img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .item-details {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .item-title {
+            font-size: 13px;
+            font-weight: bold;
+            color: #fff;
+            margin-bottom: 4px;
+            line-height: 1.3;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .item-channel {
+            font-size: 11px;
+            color: #aaa;
         }
     </style>
 </head>
@@ -146,76 +218,102 @@
         <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
         <div style="display:flex; flex:1; justify-content:center;">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Video-ID, Link oder Suchbegriff..." onkeypress="checkEnter(event)">
+                <input type="text" id="searchInput" placeholder="Video-ID oder Link eingeben..." onkeypress="checkEnter(event)">
             </div>
-            <button class="search-btn" onclick="searchVideo()">🔍</button>
+            <button class="search-btn" onclick="handleCustomInput()">🔍</button>
         </div>
         <div style="width: 70px;"></div>
     </header>
 
-    <div id="contentArea" class="content-area">
-        <div class="video-card">
-            <div class="video-thumbnail">
-                <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <div class="main-container">
+        <div class="player-section">
+            <div class="video-player-box">
+                <iframe id="mainPlayer" src="https://www.youtube-nocookie.com/embed/iyuXet_HH7Y?autoplay=1&controls=1&modestbranding=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <div class="video-info">
-                <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
-                <div>Vor 2 Stunden • 12.4K Aufrufe</div>
+            <div class="current-video-info">
+                <div id="videoTitle" class="current-title">DER CRINGESTE FANBOY IN GTA RP</div>
+                <div id="videoMeta" class="current-meta">Gleggmire • GTA RP Trolling</div>
             </div>
+        </div>
+
+        <div class="sidebar-section">
+            <div class="sidebar-title">GTA RP Creator Mix (20+ Videos)</div>
+            <div class="video-list" id="videoList"></div>
         </div>
     </div>
 
     <script>
+        // Über 20 kuratierte GTA RP Videos von Gleggmire, SpontanaBlack, Berkoli, Ediz, Cisko & CSYON
+        const channelVideos = [
+            { id: "iyuXet_HH7Y", title: "DER CRINGESTE FANBOY IN GTA RP", meta: "Gleggmire • Trolling" },
+            { id: "_JrBlwO0TBs", title: "I'M A PANTS IN GTA-RP?!?", meta: "Gleggmire • Trolling" },
+            { id: "-kMI0WUTiXA", title: "I BECOME A FAKE COP IN GTA RP", meta: "Gleggmire • Roleplay" },
+            { id: "FB5a6DjmBtQ", title: "ICH EXPOSE AUSVERSEHEN DIESEN GTA RP SERVER ?!", meta: "Gleggmire • Exposé" },
+            { id: "2UyFez0_xRI", title: "ICH werde GESUCHT in GTA RP", meta: "Gleggmire • Gameplay" },
+            { id: "U5_DHfedGxw", title: "ICH STREAMSNIPE GTA RP STREAMER UND ES WIRD GEIL", meta: "Gleggmire • Streamsnipe" },
+            { id: "HX1J7DP3LZw", title: "I AM A LAW ENFORCEMENT IN GTA RP", meta: "Berkoli • Police RP" },
+            { id: "YOD7Iu4jDvo", title: "ICH BRECHE IN HÄUSER EIN IN GTA RP", meta: "Berkoli • Crime RP" },
+            { id: "soJ8ZhbYw2Y", title: "THE PSYCHOLOGIST (KILLER) IN GTA RP", meta: "Berkoli • Psycho RP" },
+            { id: "ihDXqLVtuRo", title: "DER LOVE KILLER IN GTA RP", meta: "Berkoli • Story" },
+            { id: "k15a_0g8ZtY", title: "Die neue GTA RolePlay LEGENDE!", meta: "SpontanaBlack • Let's Play" },
+            { id: "xEVm0d8blc4", title: "Dieser RP SERVER ist komplett VERRÜCKT!", meta: "SpontanaBlack • Grand RP" },
+            { id: "5qap5aO4i9A", title: "GTA RP | Die lustigsten Momente & Schellen", meta: "Highlights • Comedy" },
+            { id: "9bZkp7q19f0", title: "GTA 5 RP - Vagos vs Ballas Gangwar", meta: "Action RP • Hardcore" },
+            { id: "h1YV4_3D6QA", title: "Wenn du im GTA RP den falschen Cops begegnest", meta: "LSPD • Comedy" },
+            { id: "2g811o_7h8g", title: "GTA Online / FiveM Epic Moments", meta: "Gameplay • Funny" },
+            { id: "DsXACB9t6kQ", title: "GTA RP Cop Story - Der erste Arbeitstag", meta: "State Police • Story" },
+            { id: "NMr3L_gIaQk", title: "1 STUNDE PURE UNTERHALTUNG", meta: "SpontanaBlack • Special" },
+            { id: "UpUy-jqcnGM", title: "SO SPIELT IHR GRAND UND KOMMT IN FAM", meta: "Berkoli • Guide" },
+            { id: "Unv8huwTpx", title: "GTA RP Undercover Einsatz Spezial", meta: "Ediz / Cisko • Undercover" }
+        ];
+
+        function renderVideoList(activeId = channelVideos[0].id) {
+            const listContainer = document.getElementById('videoList');
+            listContainer.innerHTML = '';
+
+            channelVideos.forEach(video => {
+                const isActive = video.id === activeId;
+                const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+                
+                const item = document.createElement('div');
+                item.className = `video-item ${isActive ? 'active' : ''}`;
+                item.onclick = () => playVideo(video.id, video.title, video.meta);
+                
+                item.innerHTML = `
+                    <div class="item-thumb">
+                        <img src="${thumbUrl}" alt="Thumbnail">
+                    </div>
+                    <div class="item-details">
+                        <div class="item-title">${video.title}</div>
+                        <div class="item-channel">${video.meta}</div>
+                    </div>
+                `;
+                listContainer.appendChild(item);
+            });
+        }
+
+        function playVideo(id, title, meta) {
+            document.getElementById('mainPlayer').src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&controls=1&modestbranding=1`;
+            document.getElementById('videoTitle').innerText = title;
+            document.getElementById('videoMeta').innerText = meta;
+            renderVideoList(id);
+        }
+
         function checkEnter(e) {
             if (e.key === 'Enter') {
-                searchVideo();
+                handleCustomInput();
             }
         }
 
-        function searchVideo() {
+        function handleCustomInput() {
             let query = document.getElementById('searchInput').value.trim();
             if(!query) return;
 
-            let contentArea = document.getElementById('contentArea');
             let videoId = extractVideoId(query);
-            let playlistId = extractPlaylistId(query);
-
             if (videoId) {
-                contentArea.innerHTML = `
-                    <div class="search-info">Videowiedergabe</div>
-                    <div class="video-card">
-                        <div class="video-thumbnail">
-                            <iframe src="https://www.youtube-nocookie.com/embed/${videoId}?autoplay=1&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                        </div>
-                        <div class="video-info">
-                            <div class="video-title">Wiedergabe</div>
-                            <div>Gespielt über YouTube RP</div>
-                        </div>
-                    </div>
-                `;
-            } else if (playlistId) {
-                contentArea.innerHTML = `
-                    <div class="search-info">Playlist-Wiedergabe</div>
-                    <div class="video-card">
-                        <div class="video-thumbnail" style="height: 480px;">
-                            <iframe src="https://www.youtube-nocookie.com/embed/videoseries?list=${playlistId}&autoplay=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="width:100%; height:100%;"></iframe>
-                        </div>
-                        <div class="video-info">
-                            <div class="video-title">Playlist / Kanal-Videos</div>
-                            <div>Videos laufen nacheinander</div>
-                        </div>
-                    </div>
-                `;
+                playVideo(videoId, "Benutzerdefiniertes Video", "Wiedergabe über ID/Link");
             } else {
-                let encodedQuery = encodeURIComponent(query);
-                contentArea.innerHTML = `
-                    <div class="search-info">Suchergebnisse</div>
-                    <div class="external-search-box">
-                        <p style="margin: 0 0 10px 0; font-size: 16px; color: #fff;">Suche nach: <strong>"${query}"</strong></p>
-                        <p style="margin: 0 0 20px 0; font-size: 13px; color: #aaa;">YouTube lässt direkte Suchlisten im Browser nicht mehr per iFrame zu. Klicke hier, um die Ergebnisse direkt zu öffnen und Videos zu finden:</p>
-                        <a href="https://www.youtube.com/results?search_query=${encodedQuery}" target="_blank" class="yt-link-btn">Auf YouTube suchen & abspielen</a>
-                    </div>
-                `;
+                alert("Bitte eine gültige YouTube Video-ID oder einen direkten Link eingeben!");
             }
         }
 
@@ -224,30 +322,16 @@
                 return urlOrId;
             }
             let match = urlOrId.match(/(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))([\w-]{11})/);
+            if (!match) {
+                match = urlOrId.match(/[?&]v=([\w-]{11})/);
+            }
             return match ? match[1] : null;
         }
 
-        function extractPlaylistId(urlOrId) {
-            if (/^(PL|UU|RD|FL|TL|LL)[a-zA-Z0-9_-]+$/.test(urlOrId)) {
-                return urlOrId;
-            }
-            let match = urlOrId.match(/[?&]list=([a-zA-Z0-9_-]+)/);
-            return match ? match[1] : null;
-        }
+        renderVideoList(channelVideos[0].id);
 
         function resetHome() {
-            document.getElementById('searchInput').value = '';
-            document.getElementById('contentArea').innerHTML = `
-                <div class="video-card">
-                    <div class="video-thumbnail">
-                        <iframe src="https://www.youtube-nocookie.com/embed/dQw4w9WgXcQ?autoplay=0&controls=1&modestbranding=1&playsinline=1" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-                    </div>
-                    <div class="video-info">
-                        <div class="video-title">WICHTIGES UPDATE - L.S. News</div>
-                        <div>Vor 2 Stunden • 12.4K Aufrufe</div>
-                    </div>
-                </div>
-            `;
+            playVideo(channelVideos[0].id, channelVideos[0].title, channelVideos[0].meta);
         }
     </script>
 </body>
