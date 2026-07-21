@@ -119,6 +119,24 @@
             border-radius: 12px;
             margin-bottom: 10px;
         }
+        .external-search-box {
+            background: #1f1f1f;
+            border: 1px solid #303030;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+        }
+        .yt-link-btn {
+            display: inline-block;
+            background-color: #ff0000;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            font-weight: bold;
+            margin-top: 10px;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
@@ -127,7 +145,7 @@
         <div class="logo" onclick="resetHome()">▶ YT <span>RP</span></div>
         <div style="display:flex; flex:1; justify-content:flex-end;">
             <div class="search-container">
-                <input type="text" id="searchInput" placeholder="Video, Kanal oder ID..." onkeypress="checkEnter(event)">
+                <input type="text" id="searchInput" placeholder="Video-ID, Link oder Name..." onkeypress="checkEnter(event)">
             </div>
             <button class="search-btn" onclick="searchVideo()">🔍</button>
         </div>
@@ -160,7 +178,7 @@
             let videoId = extractVideoId(query);
 
             if (videoId) {
-                // Wenn es eine gültige Video-ID oder ein Link ist -> Video abspielen
+                // Video direkt abspielen
                 contentArea.innerHTML = `
                     <div class="search-info">Videowiedergabe</div>
                     <div class="video-card">
@@ -174,17 +192,14 @@
                     </div>
                 `;
             } else {
-                // Wenn es kein direkter Link ist (z.B. ein Kanalname oder Suchbegriff), betten wir die offizielle YouTube-Suche/Einbettung ein
+                // Da YouTube keine iFrame-Suche erlaubt (Blockade), leiten wir den Nutzer sauber über einen Button zur Suche weiter
                 let encodedQuery = encodeURIComponent(query);
                 contentArea.innerHTML = `
-                    <div class="search-info">Such- / Kanalergebnisse für: "${query}"</div>
-                    <div class="video-card">
-                        <div class="video-thumbnail" style="height: 450px;">
-                            <iframe src="https://www.youtube.com/results?search_query=${encodedQuery}" style="width:100%; height:100%; border:none;"></iframe>
-                        </div>
-                        <div class="video-info" style="text-align: center;">
-                            <a href="https://www.youtube.com/results?search_query=${encodedQuery}" target="_blank" style="color: #3ea6ff; text-decoration: none; font-weight: bold;">In neuem Tab öffnen / Vollbild-Suche</a>
-                        </div>
+                    <div class="search-info">Suche nach Kanälen / Videos</div>
+                    <div class="external-search-box">
+                        <p style="margin: 0 0 10px 0; font-size: 14px; color: #fff;">Suchbegriff: <strong>"${query}"</strong></p>
+                        <p style="margin: 0 0 15px 0; font-size: 12px; color: #aaa;">YouTube blockiert direkte Vorschauen von Suchseiten im Handy. Klicke hier, um die Suche direkt zu öffnen:</p>
+                        <a href="https://www.youtube.com/results?search_query=${encodedQuery}" target="_blank" class="yt-link-btn">Auf YouTube suchen</a>
                     </div>
                 `;
             }
