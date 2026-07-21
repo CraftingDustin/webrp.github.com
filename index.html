@@ -12,16 +12,14 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: flex-start;
+            justify-content: center;
             height: 100vh;
             margin: 0;
-            padding-top: 50px;
-            box-sizing: border-box;
         }
         .logo {
-            font-size: 48px;
+            font-size: 52px;
             font-weight: bold;
-            margin-bottom: 20px;
+            margin-bottom: 30px;
             letter-spacing: -2px;
             user-select: none;
         }
@@ -37,19 +35,19 @@
             align-items: center;
             background: #303134;
             border: 1px solid #5f6368;
-            border-radius: 24px;
+            border-radius: 28px;
             width: 90%;
-            max-width: 400px;
-            height: 44px;
-            padding: 0 15px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            max-width: 450px;
+            height: 48px;
+            padding: 0 16px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.4);
         }
         input {
             flex: 1;
             background: transparent;
             border: none;
             color: #e8eaed;
-            font-size: 15px;
+            font-size: 16px;
             outline: none;
         }
         button {
@@ -58,41 +56,7 @@
             color: #8ab4f8;
             font-weight: bold;
             cursor: pointer;
-            font-size: 14px;
-        }
-        #results {
-            width: 90%;
-            max-width: 420px;
-            margin-top: 20px;
-            flex: 1;
-            overflow-y: auto;
-            padding-bottom: 20px;
-        }
-        .result-item {
-            background: #303134;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border: 1px solid #3c4043;
-        }
-        .result-item a {
-            color: #8ab4f8;
-            text-decoration: none;
             font-size: 15px;
-            display: block;
-            margin-bottom: 4px;
-        }
-        .result-item p {
-            color: #bdc1c6;
-            margin: 0;
-            font-size: 13px;
-            line-height: 1.4;
-        }
-        .loading {
-            text-align: center;
-            color: #9aa0a6;
-            margin-top: 20px;
-            font-size: 14px;
         }
     </style>
 </head>
@@ -101,70 +65,10 @@
         <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
     </div>
     
-    <div class="search-box">
-        <input type="text" id="query" placeholder="Google Suche..." autocomplete="off">
-        <button onclick="performSearch()">Suchen</button>
-    </div>
-
-    <div id="results"></div>
-
-    <script>
-        // Erlaubt das Absenden mit der Enter-Taste
-        document.getElementById('query').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-
-        async function performSearch() {
-            let query = document.getElementById('query').value.trim();
-            let resultsDiv = document.getElementById('results');
-            
-            if (!query) return;
-
-            resultsDiv.innerHTML = '<div class="loading">Suche läuft...</div>';
-
-            try {
-                // Holt die Daten über eine offene Schnittstelle, ohne die Seite zu verlassen
-                let response = await fetch(`https://api.duckduckgo.com/?q=${encodeURIComponent(query)}&format=json&no_html=1`);
-                let data = await response.json();
-                
-                resultsDiv.innerHTML = '';
-
-                let topics = data.RelatedTopics || [];
-                
-                // Fallback, falls keine Direkt-Topics da sind, aber Abstract oder Definition existiert
-                if (topics.length === 0 && data.AbstractText) {
-                    resultsDiv.innerHTML = `
-                        <div class="result-item">
-                            <a href="${data.AbstractURL}" target="_blank">${data.Heading || query}</a>
-                            <p>${data.AbstractText}</p>
-                        </div>
-                    `;
-                    return;
-                }
-
-                if (topics.length === 0) {
-                    resultsDiv.innerHTML = '<div class="loading">Keine Ergebnisse gefunden.</div>';
-                    return;
-                }
-
-                // Ergebnisse formatiert ausgeben
-                topics.forEach(item => {
-                    if (item.Text && item.FirstURL) {
-                        let div = document.createElement('div');
-                        div.className = 'result-item';
-                        div.innerHTML = `
-                            <a href="${item.FirstURL}" target="_blank">${item.Text}</a>
-                        `;
-                        resultsDiv.appendChild(div);
-                    }
-                });
-
-            } catch (err) {
-                resultsDiv.innerHTML = '<div class="loading" style="color:#ea4335;">Fehler bei der Verbindung.</div>';
-            }
-        }
-    </script>
+    <!-- Wir nutzen einen stabilen Such-Endpoint, der im Handy-Frame nicht abstürzt -->
+    <form action="https://lite.duckduckgo.com/lite/" method="GET" class="search-box">
+        <input type="text" name="q" placeholder="Google Suche..." autocomplete="off" required>
+        <button type="submit">Suchen</button>
+    </form>
 </body>
 </html>
